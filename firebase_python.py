@@ -5,7 +5,7 @@ def firebase_database():
     import firebase_admin
     from firebase_admin import credentials
     from firebase_admin import db
-
+    import requests
     cred = credentials.Certificate("anjeonmingug-f7d32-firebase-adminsdk-wciai-f17b75f446.json")
     #firebase_admin.initialize_app(cred)
 
@@ -18,8 +18,15 @@ def firebase_database():
     #ref = db.reference('restricted_access/secret_document')
     #print(ref.get())
 
+    
     ref = db.reference('building_info')
     for row in building_info:
+        #s = row[1]
+        #addresses = [x.strip() for x in s.split('/')]
+        #address = addresses[1]
+        #r = requests.get('http://apis.vworld.kr/new2coord.do?q=' + address + '&apiKey=F5474C61-0BE5-3D90-B68C-6CE08F99A4B1&domain=http://map.vworld.kr/&output=json')
+        #print(r.json)
+        # EPSG_4326_X, EPSG_4326_Y
         ref.push().set({
             column_name[0] : row[0],
             column_name[1] : row[1],

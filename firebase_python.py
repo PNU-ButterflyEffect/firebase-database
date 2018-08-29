@@ -20,14 +20,17 @@ def firebase_database():
 
     
     ref = db.reference('building_info')
+    ref.delete()
     for row in building_info:
-        #s = row[1]
-        #addresses = [x.strip() for x in s.split('/')]
-        #address = addresses[1]
-        #r = requests.get('http://apis.vworld.kr/new2coord.do?q=' + address + '&apiKey=F5474C61-0BE5-3D90-B68C-6CE08F99A4B1&domain=http://map.vworld.kr/&output=json')
-        #print(r.json)
+        s = row[1]
+        addresses = [x.strip() for x in s.split('/')]
+        address = addresses[1]
+        r = requests.get('http://apis.vworld.kr/new2coord.do?q=' + address + '&apiKey=F5474C61-0BE5-3D90-B68C-6CE08F99A4B1&domain=http://map.vworld.kr/&output=json')
+        print(r.json())
         # EPSG_4326_X, EPSG_4326_Y
         ref.push().set({
+            'EPSG_4326_X' : r.json()['EPSG_4326_X'],
+            'EPSG_4326_Y' : r.json()['EPSG_4326_Y'],
             column_name[0] : row[0],
             column_name[1] : row[1],
             column_name[2] : row[2],
@@ -52,6 +55,18 @@ def parsingCSV():
         #print(column_name)
         for row in info[1:]:
             building_info.append(row)
+
+def querySample():
+    # Retrieve the five tallest dinosaurs in the database sorted by height.
+    # 'result' will be a sorted data structure (list or OrderedDict).
+    result = dinos.order_by_child('height').limit_to_last(5).get()
+
+    # Retrieve the 5 shortest dinosaurs that are taller than 2m.
+    result = dinos.order_by_child('height').start_at(2).limit_to_first(5).get()
+
+    # Retrieve the score entries whose values are between 50 and 60.
+    result = db.reference('scores').order_by_value() \
+    .start_at(50).end_at(60).get()
 
 def main():
     parsingCSV()

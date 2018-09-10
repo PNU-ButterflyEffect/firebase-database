@@ -17,18 +17,21 @@ def firebase_database():
     # As an admin, the app has access to read and write all data, regradless of Security Rules
     #ref = db.reference('restricted_access/secret_document')
     #print(ref.get())
-    ref = db.reference('building_reviews')
-    #ref.delete()
-    for row in building_info:
-        s = row[1]
-        addresses = [x.strip() for x in s.split('/')]
+    ref = db.reference('building_reviewDB')
+    swit = 1
+    if swit == 1:
+        for row in building_info:
+            s = row[1]
+            addresses = [x.strip() for x in s.split('/')]
         
-        if(len(addresses) > 1):
-            new_post_ref= ref.push()
-            print(new_post_ref)
-            review_contents = {"count":0,}
-            print(addresses[1])
-            ref.child(addresses[1]).set(review_contents)
+            if(len(addresses) > 1):
+                #new_post_ref= ref.push()
+                #print(new_post_ref)
+                review_contents = {"count":0,}
+                print(addresses[1])
+                ref.child(addresses[1]).set(review_contents)
+    else:
+        ref.delete()
 
 
 def parsingCSV():

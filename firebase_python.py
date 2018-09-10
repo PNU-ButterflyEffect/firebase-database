@@ -17,44 +17,19 @@ def firebase_database():
     # As an admin, the app has access to read and write all data, regradless of Security Rules
     #ref = db.reference('restricted_access/secret_document')
     #print(ref.get())
-    ref = db.reference('building_info')
-    ref_location = db.reference('locationToKey')
-    ref.delete()
-    ref_location.delete()
+    ref = db.reference('building_reviews')
+    #ref.delete()
     for row in building_info:
         s = row[1]
         addresses = [x.strip() for x in s.split('/')]
         
         if(len(addresses) > 1):
-            address = addresses[1]
-            r = requests.get('http://apis.vworld.kr/new2coord.do?q=' + address + '&apiKey=F5474C61-0BE5-3D90-B68C-6CE08F99A4B1&domain=http://map.vworld.kr/&output=json')
-            print(r.json())
-            # EPSG_4326_X, EPSG_4326_Y
             new_post_ref= ref.push()
-            post_id = new_post_ref.key
+            print(new_post_ref)
+            review_contents = {"count":0,}
+            print(addresses[1])
+            ref.child(addresses[1]).set(review_contents)
 
-            
-            ref_location.update({
-                address : post_id
-            })
-            
-            ref.child(post_id).set({
-                'EPSG_4326_X' : r.json()['EPSG_4326_X'],
-                'EPSG_4326_Y' : r.json()['EPSG_4326_Y'],
-                column_name[0] : row[0],
-                column_name[1] : row[1],
-                column_name[2] : row[2],
-                column_name[3] : row[3],
-                column_name[4] : row[4],
-                column_name[5] : row[5],
-                column_name[6] : row[6],
-                column_name[7] : row[7],
-                column_name[8] : row[8],
-                column_name[9] : row[9],
-                column_name[10] : row[10]
-            })
-        else:
-            print(addresses)
 
 def parsingCSV():
     import csv

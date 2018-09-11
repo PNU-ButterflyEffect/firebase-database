@@ -1,3 +1,4 @@
+
 def firebase_database():
     import firebase_admin
     from firebase_admin import credentials
@@ -14,15 +15,26 @@ def firebase_database():
     # As an admin, the app has access to read and write all data, regradless of Security Rules
     #ref = db.reference('restricted_access/secret_document')
     #print(ref.get())
+    ref2 = db.reference()
     ref = db.reference('UserLocation/0Zby2XwOGUX6fJiYFDzE2iDQxWo2')
+    #ref.delete()
     from time import gmtime, strftime
-    print(type(strftime("%Y-%m-%d %H:%M:%S", gmtime())))
-    ref.push().set({
+    ref.delete()
+    #var myRef = database.getReference()
+    #val userLocation =UserLocation(key!!, latitude, longitude)
+    #myRef.child("UserLocation").child(key!!).push().setValue(userLocation)
+    ref2.child("UserLocation").child("0Zby2XwOGUX6fJiYFDzE2iDQxWo2").push().update({
         "createdTime" : str(strftime("%Y-%m-%d %H:%M:%S", gmtime())),
         "key" : "0Zby2XwOGUX6fJiYFDzE2iDQxWo2",
-        "latitude" : 35.1421356,
-        "logitude" : 129.0513298
+        "latitude" : 35.235648659,
+        "logitude" : 129.085798161
     })
+    #ref.push().set({
+    #    "createdTime" : str(strftime("%Y-%m-%d %H:%M:%S", gmtime())),
+    #    "key" : "0Zby2XwOGUX6fJiYFDzE2iDQxWo2",
+    #    "latitude" : 35.14213567,
+    #    "logitude" : 129.0513298
+    #})
     
 
 def main():
